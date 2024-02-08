@@ -27,7 +27,7 @@
   "Starts both the UI and the nREPL server."
   [& args]
   (println "starting shit")
-  
+  (prof/serve-ui "0.0.0.0" 8181)
   (ns/set-refresh-dirs "src")
   ;; start app
   (prof/profile {:event :alloc}

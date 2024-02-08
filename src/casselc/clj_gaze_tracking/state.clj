@@ -10,7 +10,7 @@
 
 (def *captured (atom nil))
 
-(def *state (atom {:capturing? false
+(def *state (atom {:capturing? true
                    :shutting-down? false}))
 
 (defn redraw! [] (some-> *window deref window/request-frame))
