@@ -4,6 +4,9 @@
   (:require
    [io.github.humbleui.window :as window]))
 
+(set! *warn-on-reflection* true)
+(set! *unchecked-math* :warn-on-boxed)
+
 (def *window (atom nil))
 
 (def *app (atom nil))

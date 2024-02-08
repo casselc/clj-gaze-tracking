@@ -4,6 +4,9 @@
    [casselc.clj-gaze-tracking.capture :as capture]
    [casselc.clj-gaze-tracking.state :as state]))
 
+(set! *warn-on-reflection* true)
+(set! *unchecked-math* :warn-on-boxed)
+
 (def app
   "Main app definition."
   (ui/default-theme ; we must wrap our app in a theme
@@ -34,7 +37,9 @@
    (reset! state/*window
            (ui/window
             {:title    "Capture Viewer"
-             :bg-color 0xFFFFFFFF}
+             :bg-color 0xFFFFFFFF
+             #_#_#_#_:width 1400
+             :height 800}
             state/*app)))
   (state/redraw!) 
   @(capture/capture-thread 50))
