@@ -50,7 +50,7 @@
             out-face (MatOfByte.)
             out-left-eye (MatOfByte.)
             out-right-eye (MatOfByte.)]
-        (try 
+        (try
           (.detectMultiScale eye-classifier gray-face features)
           (let [eyes (.toArray features)]
             (when (= 2 (alength eyes))
@@ -62,7 +62,7 @@
                                            [bounds-b bounds-a])
                     left-eye (.submat color-face left-bounds)
                     right-eye (.submat color-face right-bounds)]
-                (try 
+                (try
                   (Imgcodecs/imencode ".jpeg" color-frame out-frame)
                   (Imgcodecs/imencode ".jpeg" color-face out-face)
                   (Imgcodecs/imencode ".jpeg" left-eye out-left-eye)
@@ -156,8 +156,8 @@
   [{:keys [capturing? frame face left-eye right-eye]}]
   (horizontal-layout
    (if frame
-     (image frame)
-     (rectangle 1280 720))
+     (image frame [640 480])
+     (rectangle 640 480))
    (vertical-layout
     (if face
       (image face [256 256])
@@ -168,7 +168,7 @@
                        (if right-eye
                          (image right-eye [128 128])
                          (rectangle 128 128)))
-    (padding 5 
+    (padding 5
              (horizontal-layout (label "Capture?")
                                 (ui/on :mouse-down
                                        (fn [_]
@@ -180,8 +180,8 @@
   [& _]
   (let [window-info (backend/run #(capture-view @capture)
                                  {:window-title "Gaze Tracking"
-                                  :window-start-width 1554
-                                  :window-start-height 759})
+                                  :window-start-width 914
+                                  :window-start-height 519})
         ^javax.swing.JFrame frame (::backend/frame window-info)
         closing? (promise)]
     (when-let [repaint (::backend/repaint window-info)]
@@ -197,7 +197,7 @@
                           (^void windowDeiconified [_ ^WindowEvent _])
                           (^void windowIconified [_ ^WindowEvent _])
                           (^void windowOpened [_ ^WindowEvent _])))
-    (start-capture! [1280 720] 100)
+    (start-capture! [640 480] 100)
     @closing?
     (stop-capture!)
     (.dispose frame)))
