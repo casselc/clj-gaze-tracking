@@ -1,13 +1,10 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         org.bytedeco/opencv-platform {:mvn/version "4.9.0-1.5.10"}
-        io.github.humbleui/humbleui {:git/sha "321a27826b6dca2e35bde3b6ec0fc261f2e71121"}
         com.phronemophobic/membrane {:mvn/version "0.14.3-beta"}}
  :aliases
- {:dev {:ns-default user
-        :extra-paths ["dev"]
-        :extra-deps {org.clojure/tools.namespace {:mvn/version "1.4.5"}
-                     com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.2.0"}}
+ {:dev {:extra-paths ["dev"]
+        :extra-deps {com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.2.0"}}
         :jvm-opts ["-ea" "-Djdk.attach.allowAttachSelf" "-XX:+UnlockDiagnosticVMOptions" "-XX:+DebugNonSafepoints" "-XX:+EnableDynamicAgentLoading"]}
   :build {:deps {io.github.clojure/tools.build
                  {:git/tag "v0.9.2" :git/sha "fe6b140"}}
