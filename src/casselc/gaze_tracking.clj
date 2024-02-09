@@ -5,7 +5,6 @@
                                horizontal-layout
                                rectangle
                                padding
-                               spacer
                                image
                                checkbox
                                label]])
@@ -28,11 +27,10 @@
 
 (opencv_java.)
 
-(def ^:private ^CascadeClassifier face-classifier (CascadeClassifier. "resources/haarcascade_frontalface_alt.xml"))
-(def ^:private ^CascadeClassifier eye-classifier (CascadeClassifier. "resources/haarscascade_eye_tree_eyeglasses.xml"))
+(def ^CascadeClassifier face-classifier (CascadeClassifier. "resources/haarcascade_frontalface_alt.xml"))
+(def ^CascadeClassifier eye-classifier (CascadeClassifier. "resources/haarscascade_eye_tree_eyeglasses.xml"))
 
 (declare capture)
-
 
 (defn- process-frame
   [^Mat color-frame ^Mat gray-frame ^MatOfRect features]
@@ -86,7 +84,7 @@
             (.release out-left-eye)
             (.release out-right-eye)))))))
 
-(defn- capture-frames!
+(defn capture-frames!
   [{:keys [capturing? ^VideoCapture device buffers]
     :as current}]
   (if capturing?
@@ -159,35 +157,33 @@
 
 (defn capture-view
   [{:keys [capturing? frame face left-eye right-eye]}]
-  (padding 10 10 10 10
-           (horizontal-layout
-            (if frame
-              (image frame)
-              (rectangle 1280 720))
-            #_(spacer 5)
-            (vertical-layout
-             (if face
-               (image face)
-               (rectangle 256 256))
-             #_(spacer 0 5)
-             (horizontal-layout (if left-eye
-                                  (image left-eye)
-                                  (rectangle 128 128))
-                                (if right-eye
-                                  (image right-eye)
-                                  (rectangle 128 128)))
-             (spacer 0 5)
-             (horizontal-layout (label "Capturing?")
-                                (ui/on :mouse-down
-                                       (fn [_]
-                                         (send capture update :capturing? not)
-                                         nil)
-                                       (checkbox capturing?)))))))
+  (horizontal-layout
+   (if frame
+     (image frame)
+     (rectangle 1280 720))
+   (vertical-layout
+    (if face
+      (image face)
+      (rectangle 256 256))
+    (horizontal-layout (if left-eye
+                         (image left-eye)
+                         (rectangle 128 128))
+                       (if right-eye
+                         (image right-eye)
+                         (rectangle 128 128)))
+    (horizontal-layout (label "Capturing?")
+                       (ui/on :mouse-down
+                              (fn [_]
+                                (send capture update :capturing? not)
+                                nil)
+                              (checkbox capturing?))))))
 
 (defn -main
   [& _]
   (let [window-info (backend/run #(capture-view @capture)
-                                 {:window-title "Gaze Tracking"})
+                                 {:window-title "Gaze Tracking"
+                                  :window-start-width 1614
+                                  :window-start-height 817})
         ^javax.swing.JFrame frame (::backend/frame window-info)
         closing? (promise)]
     (when-let [repaint (::backend/repaint window-info)]
@@ -212,4 +208,3 @@
   (-main)
   @capture
   (stop-capture!))
-
